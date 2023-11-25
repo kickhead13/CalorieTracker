@@ -7,12 +7,18 @@ public class Meal {
 	
 	public List<Ingredient> ingredients;
 	public String name;
+	public Integer id;
+	public  String ownerUsername;
 	
 	public Meal() {
 		ingredients = new ArrayList<>();
-		name = new String();
+		name = "nothing";
+		ownerUsername = "nobody";
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "mealName:" + name + "; mealId: " + id + "; " + ownerUsername + ": \n" + ingredients;
+	}
 	
 }
