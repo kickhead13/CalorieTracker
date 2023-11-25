@@ -20,9 +20,11 @@ public class Ingredient {
 	public Integer calcium;
 	public Integer iron;
 	public Integer potassium;
+	public Integer id;
 	
 	public Ingredient() {
 		
+		this.id = 1;
 		this.name = "nothing";
 		this.per = 100;
 		this.calcium = 0;
@@ -40,6 +42,46 @@ public class Ingredient {
 		this.transFat = 0;
 		this.vitaminD = 0;
 		
+	}
+	
+	
+	/**
+	 * constructor explicit
+	 * @param name 
+	 * @param calories
+	 * @param totalFat
+	 * @param saturatedFat
+	 * @param transFat
+	 * @param cholesterol
+	 * @param sodium
+	 * @param totalCarbs
+	 * @param dietaryFiber
+	 * @param totalSugars
+	 * @param protein
+	 * @param vitaminD
+	 * @param calcium
+	 * @param iron
+	 * @param potassium
+	 */
+	public Ingredient(String name, Integer calories, Integer totalFat, Integer saturatedFat,
+			Integer transFat, Integer cholesterol, Integer sodium, Integer totalCarbs,
+			Integer dietaryFiber, Integer totalSugars, Integer protein, Integer vitaminD,
+			Integer calcium, Integer iron, Integer potassium) {
+		this.name = name;
+		this.calcium = calcium;
+		this.calories = calories;
+		this.cholesterol= cholesterol;
+		this.dietaryFiber = dietaryFiber;
+		this.iron = iron;
+		this.potassium = potassium;
+		this.protein = protein;
+		this.saturatedFat = saturatedFat;
+		this.sodium = sodium ;
+		this.totalCarbs = totalCarbs;
+		this.totalFat = totalFat;
+		this.totalSugars = totalSugars;
+		this.transFat = transFat;
+		this.vitaminD = vitaminD;
 	}
 	
 	public void addNewIngredient(Connection sqlConnection) throws Exception {
@@ -67,5 +109,29 @@ public class Ingredient {
 		
 		prepStat.close();
 	}
+	
+	public void readIngredient(ResultSet set, Integer quantity) throws Exception {
+		this.name = set.getString("name");
+		this.id = set.getInt("id");
+		this.calcium = set.getInt("calcium") * quantity/100;
+		this.calories = set.getInt("calories") * quantity/100;
+		this.cholesterol= set.getInt("cholesterol") * quantity/100;
+		this.dietaryFiber = set.getInt("dietaryFiber") * quantity/100;
+		this.iron = set.getInt("iron") * quantity/100;
+		this.potassium = set.getInt("potassium") * quantity/100;
+		this.protein = set.getInt("protein") * quantity/100;
+		this.saturatedFat = set.getInt("saturatedFat") * quantity/100;
+		this.sodium = set.getInt("sodium") * quantity/100;
+		this.totalCarbs = set.getInt("totalCarbs") * quantity/100;
+		this.totalFat = set.getInt("totalFat") * quantity/100;
+		this.totalSugars = set.getInt("totalSugars") * quantity/100;
+		this.transFat = set.getInt("transFat") * quantity/100;
+		this.vitaminD = set.getInt("vitaminD") * quantity/100;
+	}
+	
+	@Override
+	public String toString() {
+		return name + " " + id + "; calories: " + calories + "; totalFat: " + totalFat+ "; saturatedFat: " + saturatedFat;
+ 	}
 	
 }
