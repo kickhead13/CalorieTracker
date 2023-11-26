@@ -6,6 +6,29 @@ import java.sql.*;
 public class CliMain {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
+		
+		System.out.print("Login or signup? (l/s): ");
+		String option2 = scanner.nextLine();
+		
+		if(option2.equals("s")) {
+			
+			try {
+				User signUpUser = new User();
+				System.out.print("Username: " );
+				String username = scanner.nextLine();
+				System.out.print("Email: ");
+				String email =scanner.nextLine();
+				System.out.print("New password: ");
+				String password = scanner.nextLine();
+				signUpUser.signUp(email, username, password);
+			}
+			catch(Exception e) {
+				System.out.println("User already exists!");
+			}
+			
+		}
+		
+		
 		System.out.print("Username: ");
 		String username = scanner.nextLine();
 		System.out.print("Password: ");
@@ -22,6 +45,7 @@ public class CliMain {
 					" [2] Create new meal\n" +
 					" [3] Delete meal\n" +
 					" [4] Make ingredient request\n" +
+					" [5] Feedback\n" +
 					" [0] Quit\n"
 					);
 				System.out.print(">");
@@ -40,6 +64,8 @@ public class CliMain {
 						case 4:
 							makeIngredientRequest(user);
 							break;
+						case 5:
+							feedBack(user);
 						default:
 							break;
 					}
@@ -48,6 +74,7 @@ public class CliMain {
 							" [2] Create new meal\n" +
 							" [3] Delete meal\n" +
 							" [4] Make ingredient request\n" +
+							" [5] Feedback\n" + 
 							" [0] Quit\n"
 							);
 					System.out.print(">");
@@ -65,6 +92,7 @@ public class CliMain {
 						" [5] Show pending ingredient requests\n" +
 						" [6] Add new ingredient to data base\n" +
 						" [7] User permissions prompt\n" +
+						" [8] Feedback\n" + 
 						" [0] Quit\n"
 						);
 				System.out.print(">");
@@ -92,6 +120,9 @@ public class CliMain {
 					case 7:
 						permissionPrompt(user);
 						break;
+					case 8:
+						feedBack(user);
+						break;
 					default:
 						option = 0;
 						break;
@@ -105,6 +136,7 @@ public class CliMain {
 						" [5] Show pending ingredient requests\n" +
 						" [6] Add new ingredient to data base\n" +
 						" [7] User permissions prompt\n" +
+						" [8] Feedback\n" +
 						" [0] Quit\n"
 						);
 				System.out.print(">");
@@ -117,6 +149,27 @@ public class CliMain {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	static void feedBack(User user) throws Exception {
+		Connection sqlConnection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/calorietracker",
+                "root", "ALEX731321");
+		System.out.println("Insert your feedback message (one line, 400 letters maximum): ");
+		System.out.print(">");
+		Scanner scanner = new Scanner(System.in);
+		String message = scanner.nextLine();
+		
+		PreparedStatement prepStat = sqlConnection.prepareStatement(
+				"INSERT INTO feedback (username, feedbackMessage)" +
+				"VALUES (?, ?)"
+				);
+		prepStat.setString(1, user.username);
+		prepStat.setString(2, message);
+		prepStat.executeUpdate();
+		
+		prepStat.close();
+		sqlConnection.close();
 	}
 	
 	static void showPendingRequests(User user) throws Exception {
@@ -249,6 +302,7 @@ public class CliMain {
 				);
 		
 		Scanner scanner = new Scanner(System.in);
+		try {
 		Integer option = scanner.nextInt();
 		Integer zero = 0;
 		while(!option.equals(zero)) {
@@ -262,6 +316,9 @@ public class CliMain {
 					" [0] Exit\n\n>"
 					);
 			option = scanner.nextInt();
+		}
+		}catch(Exception e) {
+			
 		}
 	}
 	
@@ -280,6 +337,7 @@ public class CliMain {
 		System.out.print("Give quantity of ingredient >");
 		Integer quantity = scanner.nextInt();
 		user.addIngredientToMeal(mealId, ingredientId, quantity);
+		scanner.close();
 	}
 	
 	static void showAllIngredients(User user) throws Exception {
@@ -291,5 +349,6 @@ public class CliMain {
 		Scanner scanner = new Scanner(System.in);
 		String mealName = scanner.nextLine();
 		user.createNewMeal(mealName);
+		scanner.close();
 	}
 }
