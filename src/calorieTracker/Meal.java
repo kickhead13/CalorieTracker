@@ -16,9 +16,17 @@ public class Meal {
 		ownerUsername = "nobody";
 	}
 	
+	public Ingredient total() {
+		Ingredient total = new Ingredient();
+		for(Ingredient el : ingredients) {
+			total.add(el);
+		}
+		return total;
+	}
+	
 	@Override
 	public String toString() {
-		return "mealName:" + name + "; mealId: " + id + "; " + ownerUsername + ": \n" + ingredients;
+		return "mealName:" + name + "; mealId: " + id + "; " + ownerUsername + ": \n" + ingredients + "\n" + this.total().fullPrint();
 	}
 	
 }

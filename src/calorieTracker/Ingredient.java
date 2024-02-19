@@ -129,9 +129,32 @@ public class Ingredient {
 		this.vitaminD = set.getInt("vitaminD") * quantity/100;
 	}
 	
+	public void add(Ingredient other) {
+		this.name = "total";
+		this.calcium += other.calcium;
+		this.calories += other.calories;
+		this.cholesterol += other.cholesterol;
+		this.dietaryFiber += other.dietaryFiber;
+		this.iron += other.iron;
+		this.potassium += other.potassium;
+		this.protein += other.protein;
+		this.saturatedFat += other.saturatedFat;
+		this.sodium += other.sodium ;
+		this.totalCarbs += other.totalCarbs;
+		this.totalFat += other.totalFat;
+		this.totalSugars += other.totalSugars;
+		this.transFat += other.transFat;
+		this.vitaminD +=  other.vitaminD;
+	}
+	
+	public String fullPrint() {
+		return name + "; " + "calories: " + calories + "; protein: " + protein + "; total carbs: " + totalCarbs +
+				"; total fat: " + totalFat + "; total sugars: " + totalSugars;
+	}
+	
 	@Override
 	public String toString() {
-		return name + " " + id + "; calories: " + calories + "; totalFat: " + totalFat+ "; saturatedFat: " + saturatedFat;
+		return name + " " + id;
  	}
 	
 }

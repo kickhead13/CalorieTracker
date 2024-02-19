@@ -7,6 +7,7 @@ public class User {
 	
 	String username;
 	String email;
+	Connection conn;
 	private Boolean adminKey;
 	private Boolean allowedToRequest;
 	
@@ -14,10 +15,15 @@ public class User {
 	 * logs user in as \'nobody\' account
 	 */
 	public User() {
+		try {
 		username = "nobody";
 		email = "nobody";
 		adminKey = false;
 		allowedToRequest = true;
+		conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/calorietracker",
+                "root", "ALEX731321");
+		}catch(Exception e) {}
 	}
 	
 	public Boolean getAdminKey() {
@@ -25,9 +31,9 @@ public class User {
 	}
 	
 	public void showAllAvailableIngredients() throws Exception {
-		Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/calorietracker",
-                "root", "ALEX731321");
+		//Connection conn = DriverManager.getConnection(
+        //        "jdbc:mysql://localhost:3306/calorietracker",
+        //        "root", "ALEX731321");
 		ResultSet set = conn.createStatement().executeQuery(
 				"select * from ingredients;"
                 );
@@ -44,9 +50,9 @@ public class User {
 	 * @param password the password that should match the password of the aforementioned user
 	 */
 	public void loginWithUsername(String username, String password) throws Exception  {
-			Connection conn = DriverManager.getConnection(
-	                "jdbc:mysql://localhost:3306/calorietracker",
-	                "root", "ALEX731321");
+			//Connection conn = DriverManager.getConnection(
+	        //        "jdbc:mysql://localhost:3306/calorietracker",
+	        //        "root", "ALEX731321");
 			ResultSet set = conn.createStatement().executeQuery("select * from users where username = \'"
 	                + username + "\'"
 	                );
@@ -75,9 +81,9 @@ public class User {
 	 */
 	public void loginWithEmail(String email, String password) {
 		try {
-			Connection conn = DriverManager.getConnection(
-	                "jdbc:mysql://localhost:3306/calorietracker",
-	                "root", "ALEX731321");
+			//Connection conn = DriverManager.getConnection(
+	        //        "jdbc:mysql://localhost:3306/calorietracker",
+	        //        "root", "ALEX731321");
 			ResultSet set = conn.createStatement().executeQuery("select * from users where email = \'"
 	                + email + "\'"
 	                );
@@ -108,9 +114,9 @@ public class User {
 	 */
 	public void signUp(String email, String username, String password) {
 		try {
-			Connection conn = DriverManager.getConnection(
-	                "jdbc:mysql://localhost:3306/calorietracker",
-	                "root", "ALEX731321");
+			//Connection conn = DriverManager.getConnection(
+	         //       "jdbc:mysql://localhost:3306/calorietracker",
+	         //       "root", "ALEX731321");
             
 			PreparedStatement prepStat 
                 = conn.prepareStatement("INSERT INTO USERS (username, email, password, admin)"+
@@ -245,7 +251,7 @@ public class User {
 	 * @throws Exception if user is not allowed to request new ingredients it'll throw an Exception
 	 */
 	public void requestNewIngredient(String nameOfNewIngredient) throws Exception {
-		System.out.println(this.allowedToRequest);
+		//System.out.println(this.allowedToRequest);
 		if(!this.allowedToRequest) 
 			throw new Exception("UTILIZATORULUI NU II ESTE PERMIS SA FACA REQUEST-URI");
 		try {

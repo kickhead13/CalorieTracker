@@ -28,7 +28,6 @@ public class CliMain {
 			
 		}
 		
-		
 		System.out.print("Username: ");
 		String username = scanner.nextLine();
 		System.out.print("Password: ");
@@ -78,7 +77,12 @@ public class CliMain {
 							" [0] Quit\n"
 							);
 					System.out.print(">");
-					option = scanner.nextInt();
+					Scanner newOption = new Scanner(System.in);
+					//newOption.nextLine();
+					if(newOption.hasNextInt())
+						option = newOption.nextInt();
+					else
+						option = newOption.nextInt();
 				}
 			}
 			else {
