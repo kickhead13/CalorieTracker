@@ -97,6 +97,9 @@ public class ConfirmChangeEmail extends JFrame {
 			public void actionPerformed(ActionEvent ae) {
 				String usercode = textField.getText();
 				if(usercode.equals(randomint)) {
+					PasswordChanger frame = new PasswordChanger(email);
+					dispose();
+					frame.setVisible(true);
 					lblNewLabel_3.setText("");
 				} else {
 					lblNewLabel_3.setText("invalid code!");

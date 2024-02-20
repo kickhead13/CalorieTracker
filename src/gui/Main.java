@@ -81,6 +81,7 @@ public class Main extends JFrame {
 		contentPane.add(lblNewLabel_3);
 		
 		User user = new User();
+		
 		JButton btnNewButton = new JButton("Log In");
 		btnNewButton.setBackground(new Color(237, 239, 243));
 		btnNewButton.setBounds(95, 154, 145, 23);
@@ -139,6 +140,14 @@ public class Main extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				SignUp frame = new SignUp();
+				dispose();
+				frame.setVisible(true);
+			}
+		});
+		
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				ChangePassword frame = new ChangePassword();
 				dispose();
 				frame.setVisible(true);
 			}
