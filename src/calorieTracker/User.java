@@ -5,10 +5,10 @@ import java.util.*;
 
 public class User {
 	
-	String username;
-	String email;
-	Connection conn;
-	private Boolean adminKey;
+	public String username;
+	public String email;
+	public Connection conn;
+	public Boolean adminKey;
 	private Boolean allowedToRequest;
 	
 	/**
@@ -70,7 +70,7 @@ public class User {
 			this.allowedToRequest = set.getBoolean("allowedToRequest");
 			
 			set.close();
-            conn.close();
+            //conn.close();
 	}
 	
 	
@@ -81,9 +81,6 @@ public class User {
 	 */
 	public void loginWithEmail(String email, String password) {
 		try {
-			//Connection conn = DriverManager.getConnection(
-	        //        "jdbc:mysql://localhost:3306/calorietracker",
-	        //        "root", "ALEX731321");
 			ResultSet set = conn.createStatement().executeQuery("select * from users where email = \'"
 	                + email + "\'"
 	                );

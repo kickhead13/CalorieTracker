@@ -22,6 +22,7 @@ import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import calorieTracker.*;
 
 public class IngredientSearch extends JFrame {
 
@@ -37,6 +38,11 @@ public class IngredientSearch extends JFrame {
 	private JSeparator separator;
 	private JSeparator separator_1;
 	private JLabel lblNewLabel_4;
+	private JLabel lblNewLabel_5;
+	private JButton btnNewButton_3;
+	private JLabel lblNewLabel_6;
+	private JButton btnNewButton_4;
+	private JButton btnNewButton_5;
 	
 	/**
 	 * Launch the application.
@@ -45,7 +51,7 @@ public class IngredientSearch extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					IngredientSearch frame = new IngredientSearch(3);
+					IngredientSearch frame = new IngredientSearch(new User(), 3);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,11 +63,11 @@ public class IngredientSearch extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public IngredientSearch(Integer mealId) {
+	public IngredientSearch(User user, Integer mealId) {
 		setTitle("Ingredient Search");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 474, 542);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 474, 558);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(245, 252, 251));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -70,7 +76,7 @@ public class IngredientSearch extends JFrame {
 		contentPane.setLayout(null);
 		
 		textField = new JTextField();
-		textField.setBounds(30, 21, 295, 20);
+		textField.setBounds(10, 21, 240, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
@@ -95,13 +101,15 @@ public class IngredientSearch extends JFrame {
 		
 		JButton btnNewButton = new JButton("Search");
 		btnNewButton.setBackground(new Color(237, 239, 243));
-		btnNewButton.setBounds(335, 20, 89, 23);
+		btnNewButton.setBounds(260, 20, 89, 23);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				//System.out.println("test");
 				try {
 					
 					panel.removeAll();
+					panel.revalidate();
+					panel.repaint();
 					
 					String text = textField.getText();
 					Connection conn = DriverManager.getConnection(
@@ -148,22 +156,52 @@ public class IngredientSearch extends JFrame {
 						btnNewButton_2.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent ae) {
 								try {
-									PreparedStatement stat = conn.prepareStatement(
-											"INSERT INTO ingredientsofmeals (ingredientId, mealId, quantity)" +
-											"VALUES(?,?,?)"
+									
+									ResultSet set1 = user.conn.createStatement().executeQuery(
+											"select COUNT(quantity) as quant from ingredientsofmeals"+
+											" WHERE ingredientId=" + a +" and mealid=" + mealId + ";"
 											);
-									stat.setInt(1, a);
-									stat.setInt(2, mealId);
-									try {
+									
+									set1.next();
+									Integer quant = set1.getInt("quant");
+									if(quant == 0) {
+									
+										PreparedStatement stat = conn.prepareStatement(
+												"INSERT INTO ingredientsofmeals (ingredientId, mealId, quantity)" +
+												"VALUES(?,?,?)"
+												);
 										
-										stat.setInt(3, Integer.parseInt(textField_1.getText()));
-										lblNewLabel_4.setText("");
-									}catch(NumberFormatException e) {
-										lblNewLabel_4.setText("Quantity must be number!");
-										return;
+										stat.setInt(1, a);
+										stat.setInt(2, mealId);
+										try {
+											
+											stat.setInt(3, Integer.parseInt(textField_1.getText()));
+											lblNewLabel_4.setText("");
+										}catch(NumberFormatException e) {
+											lblNewLabel_4.setText("Quantity must be number!");
+											return;
+										}
+										stat.executeUpdate();
+										stat.close();
 									}
-									stat.executeUpdate();
-									stat.close();
+									else {
+										PreparedStatement stat = conn.prepareStatement(
+												"UPDATE ingredientsofmeals SET quantity=quantity+?"+
+												" WHERE mealId=? AND ingredientId=?;"
+												);
+										try {
+											stat.setInt(1, Integer.parseInt(textField_1.getText()));
+											lblNewLabel_4.setText("");
+										}catch(NumberFormatException e) {
+											lblNewLabel_4.setText("Quantity must be number!");
+											return;
+										}
+										stat.setInt(3, a);
+										stat.setInt(2, mealId);
+										stat.executeUpdate();
+										stat.close();
+									}
+									
 								}catch(Exception e) {e.printStackTrace();}
 							}
 						});
@@ -216,6 +254,46 @@ public class IngredientSearch extends JFrame {
 		separator_1 = new JSeparator();
 		separator_1.setBounds(0, 71, 458, 2);
 		contentPane.add(separator_1);
+		
+		lblNewLabel_5 = new JLabel("Can't find your ingredient?");
+		lblNewLabel_5.setBounds(43, 455, 161, 14);
+		contentPane.add(lblNewLabel_5);
+		
+		btnNewButton_3 = new JButton("Request Ingredient");
+		btnNewButton_3.setBackground(new Color(237, 239, 243));
+		btnNewButton_3.setBounds(53, 469, 125, 23);
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				RequestIngredient frame = new RequestIngredient(user);
+				frame.setVisible(true);
+			}
+		});
+		contentPane.add(btnNewButton_3);
+		
+		lblNewLabel_6 = new JLabel("Is there somehting incorrect?");
+		lblNewLabel_6.setBounds(248, 455, 185, 14);
+		contentPane.add(lblNewLabel_6);
+		
+		btnNewButton_4 = new JButton("Report");
+		btnNewButton_4.setBackground(new Color(237, 239, 243));
+		btnNewButton_4.setBounds(275, 469, 116, 23);
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				Feedback frame = new Feedback(user);
+				frame.setVisible(true);
+			}
+		});
+		contentPane.add(btnNewButton_4);
+		
+		btnNewButton_5 = new JButton("Done");
+		btnNewButton_5.setBackground(new Color(237, 239, 243));
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				dispose();
+			}
+		});
+		btnNewButton_5.setBounds(359, 20, 89, 23);
+		contentPane.add(btnNewButton_5);
 		
 		
 

@@ -24,7 +24,7 @@ import javax.mail.*;
 public class SignUp extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JPasswordField passwordField;

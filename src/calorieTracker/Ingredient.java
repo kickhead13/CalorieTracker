@@ -111,6 +111,9 @@ public class Ingredient {
 	}
 	
 	public void readIngredient(ResultSet set, Integer quantity) throws Exception {
+		
+		System.out.println(quantity);
+		
 		this.name = set.getString("name");
 		this.id = set.getInt("id");
 		this.calcium = set.getInt("calcium") * quantity/100;

@@ -66,40 +66,40 @@ public class Main extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		textField = new JTextField();
-		textField.setBounds(95, 85, 145, 20);
+		textField.setBounds(95, 104, 145, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Username");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_2.setBounds(95, 70, 61, 17);
+		lblNewLabel_2.setBounds(95, 88, 61, 17);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Password");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_3.setBounds(95, 112, 61, 20);
+		lblNewLabel_3.setBounds(95, 135, 61, 20);
 		contentPane.add(lblNewLabel_3);
 		
 		User user = new User();
 		
 		JButton btnNewButton = new JButton("Log In");
 		btnNewButton.setBackground(new Color(237, 239, 243));
-		btnNewButton.setBounds(95, 154, 145, 23);
+		btnNewButton.setBounds(95, 185, 145, 23);
 		contentPane.add(btnNewButton);
 		
 		JLabel lblNewLabel_4 = new JLabel("Don't have an account?");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel_4.setBounds(106, 227, 131, 14);
+		lblNewLabel_4.setBounds(106, 244, 131, 14);
 		contentPane.add(lblNewLabel_4);
 		
 		JButton btnNewButton_1 = new JButton("Sign Up");
 		btnNewButton_1.setBackground(new Color(237, 239, 243));
-		btnNewButton_1.setBounds(95, 247, 145, 23);
+		btnNewButton_1.setBounds(95, 258, 145, 23);
 		contentPane.add(btnNewButton_1);
 		
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setForeground(new Color(255, 0, 0));
-		lblNewLabel_5.setBounds(59, 188, 224, 14);
+		lblNewLabel_5.setBounds(57, 219, 224, 14);
 		contentPane.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("");
@@ -109,17 +109,17 @@ public class Main extends JFrame {
 		
 		JLabel lblNewLabel_7 = new JLabel("Forgot your password?");
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel_7.setBounds(106, 281, 134, 14);
+		lblNewLabel_7.setBounds(106, 292, 134, 14);
 		contentPane.add(lblNewLabel_7);
 		
 		JButton btnNewButton_2 = new JButton("Change Password");
 		btnNewButton_2.setBackground(new Color(237, 239, 243));
 		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNewButton_2.setBounds(95, 300, 145, 23);
+		btnNewButton_2.setBounds(95, 306, 145, 23);
 		contentPane.add(btnNewButton_2);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(95, 131, 145, 20);
+		passwordField.setBounds(95, 154, 145, 20);
 		contentPane.add(passwordField);
 		
 		btnNewButton.addActionListener(new ActionListener() {
@@ -130,6 +130,9 @@ public class Main extends JFrame {
 					user.loginWithUsername(username, password);
 					lblNewLabel_5.setText("");
 					lblNewLabel_6.setText("");
+					App frame = new App(user);
+					dispose();
+					frame.setVisible(true);
 				} catch(Exception e) {
 					lblNewLabel_5.setText("Username and password combination");
 					lblNewLabel_6.setText("is not valid");
@@ -142,6 +145,7 @@ public class Main extends JFrame {
 				SignUp frame = new SignUp();
 				dispose();
 				frame.setVisible(true);
+				//contentPane = frame.contentPane;
 			}
 		});
 		
